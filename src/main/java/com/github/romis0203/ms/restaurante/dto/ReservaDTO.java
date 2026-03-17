@@ -1,44 +1,43 @@
 package com.github.romis0203.ms.restaurante.dto;
 
 import com.github.romis0203.ms.restaurante.entities.Reserva;
-import jakarta.validation.constraints.FutureOrPresent;
+import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
 import java.time.LocalDate;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
+
 public class ReservaDTO {
 
     private Long id;
 
-    @NotNull(message = "Campo data da reserva é requerido")
-    @FutureOrPresent(message = "A data deve ser maior ou igual à data atual")
-    private LocalDate dataReserva;
-
-    @NotBlank(message = "Campo nome do cliente é requerido")
-    @Size(min = 3, max = 100, message = "O nome deve ter entre 3 e 100 caracteres")
+    @NotBlank(message = "campo é obrigatório")
+    @Size(min = 3, max = 100, message = "O nome deve conter entre 3 a 100 caracteres")
     private String nomeCliente;
 
-    @NotNull(message = "Campo quantidade de pessoas é requerido")
-    @Positive(message = "A quantidade de pessoas deve ser maior que zero")
-    private Integer qtdePessoas;
+    @NotBlank(message = "campo é obrigatório")
+    @Size(min = 1, message = "A reserva deve ter no mínimo uma pessoa")
+    private Integer qtdepessoas;
 
-    @NotNull(message = "Campo restaurante é requerido")
+    //@Future //usado para não aceitar data anterior a de hoje.
+    @NotBlank(message = "campo é obrigatório")
+    private LocalDate dataReserva;
+
+    @NotNull(message = "campo restaurante é obrigatório")
     private RestauranteDTO restaurante;
 
-    public ReservaDTO(Reserva reserva) {
+    public ReservaDTO(Reserva reserva){
         id = reserva.getId();
-        dataReserva = reserva.getDataReserva();
         nomeCliente = reserva.getNomeCliente();
-        qtdePessoas = reserva.getQtdePessoas();
+        qtdepessoas = reserva.getQtdePessoas();
+        dataReserva = reserva.getDataReserva();
         restaurante = new RestauranteDTO(reserva.getRestaurante());
     }
 }

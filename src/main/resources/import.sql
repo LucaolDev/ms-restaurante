@@ -13,4 +13,4 @@ INSERT INTO tb_reserva (data_reserva, nome_cliente, qtde_pessoas, restaurante_id
 INSERT INTO tb_reserva (data_reserva, nome_cliente, qtde_pessoas, restaurante_id) VALUES ('2026-06-15', 'Pedro Almeida', 8, 2);
 
 
-INSERT INTO tb_reserva (data_reserva, nome_cliente, qtde_pessoas, restaurante_id) VALUES ('2026-07-01', 'Fernanda Lima', 5, 3);
+INSERT INTO tb_reserva (data_reserva, nome_cliente, qtde_pessoas, restaurante_id) VALUES ('2026-03-01', 'Fernanda Lima', 5, 3);

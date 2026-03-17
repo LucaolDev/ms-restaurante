@@ -13,37 +13,48 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/reservas")
+
 public class ReservaController {
 
     @Autowired
-    private ReservaService service;
+    private ReservaService reservaService;
 
     @GetMapping
-    public ResponseEntity<List<ReservaDTO>> getAllReservas() {
-        return ResponseEntity.ok(service.findAllReservas());
+    public ResponseEntity<List<ReservaDTO>> getAllReservas(){
+
+        List<ReservaDTO> reservas = reservaService.findAllReservas();
+
+        return ResponseEntity.ok(reservas);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ReservaDTO> getReservaById(@PathVariable Long id) {
-        return ResponseEntity.ok(service.findReservaById(id));
+    public ResponseEntity<ReservaDTO> getReservaById(@PathVariable Long id){
+
+        ReservaDTO reservaDTO = reservaService.findReservaById(id);
+        return ResponseEntity.ok(reservaDTO);
     }
 
     @PostMapping
-    public ResponseEntity<ReservaDTO> createReserva(@RequestBody @Valid ReservaDTO dto) {
-        dto = service.saveReserva(dto);
-        URI uri = ServletUriComponentsBuilder.fromCurrentRequestUri()
-                .path("/{id}").buildAndExpand(dto.getId()).toUri();
-        return ResponseEntity.created(uri).body(dto);
+    public ResponseEntity<ReservaDTO> createReserva(@Valid @RequestBody ReservaDTO reservaDTO){
+
+        reservaDTO = reservaService.saveReserva(reservaDTO);
+
+        URI uri  = ServletUriComponentsBuilder.fromCurrentRequestUri().path("/{id]").buildAndExpand(reservaDTO.getId()).toUri();
+
+        return ResponseEntity.created(uri).body(reservaDTO);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ReservaDTO> updateReserva(@PathVariable Long id, @RequestBody @Valid ReservaDTO dto) {
-        return ResponseEntity.ok(service.updateReserva(id, dto));
+    public ResponseEntity<ReservaDTO> updateReserva (@PathVariable Long id, @RequestBody @Valid ReservaDTO reservaDTO){
+
+        reservaDTO = reservaService.updateReserva(id, reservaDTO);
+        return ResponseEntity.ok(reservaDTO);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteReservaById(@PathVariable Long id) {
-        service.deleteReservaById(id);
+    public ResponseEntity<Void> deleteReservaById(@PathVariable Long id){
+
+        reservaService.deleteReservaById(id);
         return ResponseEntity.noContent().build();
     }
 }
