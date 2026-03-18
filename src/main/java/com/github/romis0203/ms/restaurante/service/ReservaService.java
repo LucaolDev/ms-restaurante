@@ -43,15 +43,14 @@ public class ReservaService {
         return new ReservaDTO(reserva);
     }
 
-    private void copyDtoToReserva(ReservaDTO inputDTO, Reserva reserva){
+    private void copyDtoToReserva(ReservaDTO inputDTO, Reserva reserva) {
         reserva.setNomeCliente(inputDTO.getNomeCliente());
         reserva.setQtdePessoas(inputDTO.getQtdePessoas());
         reserva.setDataReserva(inputDTO.getDataReserva());
 
         if (inputDTO.getRestaurante() != null && inputDTO.getRestaurante().getId() != null) {
-            var restaurante = restauranteRepository.findById(inputDTO.getRestaurante().getId())
-                    .orElseThrow(() -> new ResourceNotFoundException("Restaurante não encontrado"));
-            reserva.setRestaurante(restaurante);
+            reserva.setRestaurante(restauranteRepository.findById(inputDTO.getRestaurante().getId())
+                    .orElseThrow(() -> new ResourceNotFoundException("Restaurante não encontrado")));
         }
     }
 
