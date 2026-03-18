@@ -4,6 +4,7 @@ import com.github.romis0203.ms.restaurante.dto.ReservaDTO;
 import com.github.romis0203.ms.restaurante.entities.Reserva;
 import com.github.romis0203.ms.restaurante.exceptions.ResourceNotFoundException;
 import com.github.romis0203.ms.restaurante.repositories.ReservaRepository;
+import com.github.romis0203.ms.restaurante.repositories.RestauranteRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,6 +17,9 @@ public class ReservaService {
 
     @Autowired
     private ReservaRepository reservaRepository;
+
+    @Autowired
+    private RestauranteRepository restauranteRepository;
 
     @Transactional(readOnly = true)
     public List<ReservaDTO> findAllReservas(){
@@ -37,10 +41,19 @@ public class ReservaService {
         copyDtoToReserva(inputDTO, reserva);
         reserva = reservaRepository.save(reserva);
         return new ReservaDTO(reserva);
-
     }
 
-    private void copyDtoToReserva(ReservaDTO inputDTO, Reserva reserva){reserva.setNomeCliente(inputDTO.getNomeCliente());}
+    private void copyDtoToReserva(ReservaDTO inputDTO, Reserva reserva){
+        reserva.setNomeCliente(inputDTO.getNomeCliente());
+        reserva.setQtdePessoas(inputDTO.getQtdePessoas());
+        reserva.setDataReserva(inputDTO.getDataReserva());
+
+        if (inputDTO.getRestaurante() != null && inputDTO.getRestaurante().getId() != null) {
+            var restaurante = restauranteRepository.findById(inputDTO.getRestaurante().getId())
+                    .orElseThrow(() -> new ResourceNotFoundException("Restaurante não encontrado"));
+            reserva.setRestaurante(restaurante);
+        }
+    }
 
     @Transactional
     public ReservaDTO updateReserva(Long id, ReservaDTO inputDto){
